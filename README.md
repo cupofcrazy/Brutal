@@ -1,6 +1,6 @@
 # UNTITLED
 
-Starter template with Nuxt v3 and Sanity v3
+Starter monorepo template with Nuxt v3 and Sanity v3
 [See Demo](http://localhost:3000)
 
 ## Features
@@ -14,3 +14,6 @@ Starter template with Nuxt v3 and Sanity v3
 
 ### Start Development Server
 ```pnpm dev```
+
+site: http://localhost:3000
+studio: http://localhost:3333
