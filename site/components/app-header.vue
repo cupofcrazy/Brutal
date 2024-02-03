@@ -10,6 +10,62 @@ const navigationLinks = ref<NavLinkProps[]>([
   { url: '/info', title: 'Info' },
 ])
 
+const postsResults = ref<any>(null)
+const isLoading = ref(false)
+
+const searchInput = ref<HTMLInputElement | null>(null)
+const searchQuery = ref("")
+const searchResults = ref<any>([])
+const showResults = ref(false)
+
+const hideSearchResults = () => {
+  isLoading.value = false
+  searchQuery.value = ""
+  showResults.value = false
+  
+}
+
+
+const route = useRoute()
+
+
+watch(() => route.fullPath, () => {
+  hideSearchResults()
+}, { deep: true, immediate: true })
+
+
+const fetchPosts = async () => {
+  const query = `*[_type == "post" && title match "${searchQuery.value}*"]`
+  const results = await useSanity().fetch<any>(query)
+  return results
+}
+
+const debounceWatch = useDebounceFn(async() => {
+  if (searchQuery.value.trim() == "" || searchQuery.value.trim().length < 2) {
+    searchResults.value = []
+    isLoading.value = false
+    return
+  }
+  isLoading.value = true
+  const posts = await fetchPosts()
+
+  searchResults.value = posts
+  isLoading.value = false
+  showResults.value = true
+}, 1000)
+
+watch(searchQuery, () => {
+  
+  debounceWatch()
+})
+
+onMounted(() => {
+  searchInput.value?.focus()
+
+})
+onClickOutside(postsResults, hideSearchResults)
+
+
 </script>
 
 <template>
@@ -23,7 +79,16 @@ const navigationLinks = ref<NavLinkProps[]>([
           </li>
         </ul>
       </div>
-      
+      <div class="nav__center">
+        <div class="search">
+          <input class="search__input" v-model="searchQuery" type="text" placeholder="Type something..." ref="searchInput">
+          <p v-if="isLoading">Fetching results...</p>
+          <ul ref="postsResults" class="posts" v-if="searchResults.length > 0 && showResults">
+            <PostListItem :post="post" v-for="post in searchResults" :key="post._id" />
+          </ul>
+          <!-- <p v-else>No Results</p> -->
+        </div>
+      </div>
 
       <div class="nav__right">
         <p>{{ new Date().getFullYear() }}</p>
@@ -54,6 +119,8 @@ const navigationLinks = ref<NavLinkProps[]>([
   &__left {
     display: flex;
     gap: 1rem
+
+    
   }
 
   &__links {
@@ -62,6 +129,16 @@ const navigationLinks = ref<NavLinkProps[]>([
     gap: 1rem;
     // left: 7%;
   }
+
+  &__center {
+
+  }
+
+  // ul {
+  //   display: flex;
+  //   align-items: center;
+  //   gap: 1rem;
+  // }
 }
 
 .nav-link {
@@ -118,6 +195,23 @@ const navigationLinks = ref<NavLinkProps[]>([
   }
 
   
+}
+
+.search {
+  position: relative;
+
+  &__input {
+    background-color: rgba(0, 0, 0, .05);
+    border-radius: .5rem;
+    border: 0;
+    outline: none;
+    padding: .5rem .75rem;
+    width: 300px;
+
+    &::placeholder {
+      color: rgba(0, 0, 0, .5);
+    }
+  }
 }
 
 .posts {
