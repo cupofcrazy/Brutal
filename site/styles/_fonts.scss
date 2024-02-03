@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "HNText";
+  // font-weight: 300;
+  src:
+    url("/fonts/HelveticaNowText-Regular.woff2") format("woff2"),
+}
+
+@font-face {
+  font-family: "HNText";
+  font-weight: 500;
+  src:
+    url("/fonts/HelveticaNowText-Medium.woff2") format("woff2"),
+}
+
+// @font-face {
+//   font-family: "HNText";
+//   font-weight: 500;
+//   src:
+//     url("public/fonts/HelveticaNowText-Bold.woff2") format("woff2")
+// }
