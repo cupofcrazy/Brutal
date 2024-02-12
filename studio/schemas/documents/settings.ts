@@ -4,12 +4,14 @@ export default defineType({
   name: 'settings',
   title: 'Settings',
   type: 'document',
+  groups: [{ name: 'seo', title: 'SEO' }, { name: 'content', title: 'Content' }],
   fields: [
     defineField({
       name: 'title',
       title: 'Site Title',
       description: 'Default site title otherwise frontend changes',
-      type: 'string'
+      type: 'string',
+      group: 'seo'
     }),
     defineField({
       name: 'siteImage',
@@ -18,7 +20,22 @@ export default defineType({
       type: 'image',
       options: {
         hotspot: true
-      }
+      },
+      group: 'seo'
+    }),
+    defineField({
+      name: 'favicon',
+      type: 'image',
+      group: 'seo'
+    }),
+    defineField({
+      name: 'navigation',
+      title: 'Pages',
+      type: 'array',
+      of: [
+        { type: 'reference', to: { type: 'page' }, title: 'Pages'}
+      ],
+      group: 'content'
     })
   ]
 })
