@@ -1,7 +1,21 @@
 <script setup lang="ts">
+const imageQuery = groq`
+  "image": image.asset->
+`
 const query = groq`
   *[_type == "post" && slug.current == $slug][0] {
     author ->,
+    mainImage {
+      ${imageQuery},
+      alt,
+    },
+    "body": body[] {
+      ...,
+      _type == "a11yImage" => {
+        ${imageQuery},
+      }
+    },
+    
     ...
   }
 `
@@ -16,14 +30,26 @@ useHead({
   title: `${post.value.title} | UNTITLED`,
 })
 
-console.log(data)
+
+
+onMounted(() => {
+})
 </script>
 
 <template>
   <div class="container">
     <div class="post">
       <div class="post__image-wrapper">
-        <NuxtImg class="post__image" v-if="post?.mainImage" :src="$urlFor(post.mainImage).url()" alt="test"></NuxtImg>
+        <AppImage
+          class="post__image" :src="$urlFor(post.mainImage.image).url()"
+          :aspect-ratio="post.mainImage.image.metadata.dimensions.aspectRatio"
+          :alt="post.mainImage.alt"
+          :placeholder="$urlFor(post.mainImage.image)
+          .width(30)
+          .blur(30)
+          .auto('format')
+          .url()" />
+        <!-- <NuxtImg class="post__image" v-if="post?.mainImage" :src="$urlFor(post.mainImage.image).url()" alt="test"></NuxtImg> -->
         <p v-if="post.author" class="post__author">By {{ post?.author.name }}</p>
       </div>
       
@@ -39,7 +65,7 @@ console.log(data)
 <style lang="scss" scoped>
 .container {
   width: 100%;
-  margin: 10rem 0;
+  margin: 2.5rem 0;
 }
 
 .post {

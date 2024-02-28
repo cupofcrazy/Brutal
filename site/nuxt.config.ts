@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: false },
+  components: true,
   app: {
     head: {
       title: process.env.SITE_NAME || 'Hello World',

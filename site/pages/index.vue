@@ -1,7 +1,13 @@
 <script setup lang="ts">
+
+
 useHead({
   title: 'UNTITLED | Index',
 })
+
+const imageQuery = groq`
+  "image": image.asset->
+`
 
 type Post = {
   title: string
@@ -9,7 +15,16 @@ type Post = {
   body: any
 }
 const query = groq`
-  *[_type == "post"]
+  *[_type == "post"] {
+    title,
+    // "mainImage": mainImage.image.asset->,
+    mainImage {
+      ${imageQuery},
+      alt,
+    },
+    description,
+    "slug": slug.current,
+  }
 `
 const { data } = await useAsyncData('posts', () => useSanity().fetch<{ posts: Post[] }>(query))
 const posts = ref<any>(null)
@@ -22,8 +37,16 @@ posts.value = data.value
   <div id="index">
     <ul>
       <li class="post" v-for="post in posts" :key="post.id">
-        <NuxtLink :to="`/posts/${post.slug.current}`">
-          <NuxtImg v-if="post?.mainImage" :src="$urlFor(post.mainImage).url()" alt="test"></NuxtImg>
+        <NuxtLink :to="`/posts/${post.slug}`">
+          <!-- <NuxtImg v-if="post?.mainImage" :src="$urlFor(post.mainImage.image).url()" alt="test"></NuxtImg> -->
+          <AppImage class="img" :src="$urlFor(post.mainImage.image).url()"
+            :alt="post.mainImage.alt"
+            :aspect-ratio="1"
+            :placeholder="$urlFor(post.mainImage.image)
+            .width(30)
+            .blur(30)
+            .auto('format')
+            .url()" />
           <p class="post__title">{{ post?.title }}</p>
           <p class="post__desc">{{ post.description }}</p>
       </NuxtLink>
@@ -58,7 +81,7 @@ ul {
   }
 }
 
-img  {
+.img  {
   width: 100%;
   // height: 100px;
   aspect-ratio: 4/3;

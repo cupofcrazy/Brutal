@@ -8,16 +8,19 @@
 // import Slideshow from '@/components/slideshow.vue';
 import { PortableText } from '@portabletext/vue'
 import Slideshow from './slideshow.vue';
+import AppImage from './AppImage.vue';
 
 const props = defineProps<{ content: any }>()
 const app = useNuxtApp()
 
 const components = {
   types: {
-    image: ({ value }: any) => {
-      return h('img', {
-        class: 'block-content__img',
-        src: app.$urlFor(value).url()
+    a11yImage: ({ value }: any) => {
+      return h(AppImage, {
+        src: app.$urlFor(value.image).url(),
+        alt: value.alt,
+        aspectRatio: value.image.metadata.dimensions.aspectRatio,
+        placeholder: app.$urlFor(value.image).width(30).blur(30).auto('format').url(),
       })
     },
     slideshow: ({ value }: any) =>  h(Slideshow, { content: value })

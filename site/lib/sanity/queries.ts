@@ -1,9 +1,12 @@
 export const homepageQuery = groq`
   *[_type == "home"][0]
 `
+const imageQuery = groq`
+  "image": image.asset->url
+`
 
 export const aboutQuery = groq`
-  *[_type == "about"][0]
+  *[_type == "about"][0] 
 `
 
 export const pageQuery = groq`

@@ -10,6 +10,8 @@ const navigationLinks = ref<NavLinkProps[]>([
   { url: '/info', title: 'Info' },
 ])
 
+const isDevelopment = import.meta.env.MODE === 'development'  
+
 </script>
 
 <template>
@@ -20,6 +22,9 @@ const navigationLinks = ref<NavLinkProps[]>([
         <ul class="nav__links">
           <li v-for="link in navigationLinks" :key="link.url">
             <NuxtLink class="nav-link" :to="link.url">{{ link.title }}</NuxtLink>
+          </li>
+          <li v-if="isDevelopment">
+            <a href="http://localhost:3333" target="_blank">Studio</a>
           </li>
         </ul>
       </div>
