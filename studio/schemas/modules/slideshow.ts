@@ -7,15 +7,28 @@ export default defineType({
   type: 'object',
   fields: [
     defineField({
-      name: 'title',
+      name: 'title',  
       title: 'Title',
       type: 'string'
+    }),
+    defineField({
+      name: 'type',
+      title: 'Type',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Tap', value: 'tap' },
+          { title: 'Slide', value: 'slide' }
+        ],
+        layout: 'radio.vertical',
+        default: 'tap'
+      }
     }),
     defineField({
       name: 'images',
       type: 'array',
       of: [
-        { type: 'image' }
+        { type: 'a11yImage' }
       ],
       options: {
         layout: 'grid'
@@ -26,7 +39,7 @@ export default defineType({
     select: {
       title: 'title',
       subtitle: 'images',
-      media: 'images[0].asset'
+      media: 'images[0].image.asset'
     },
     prepare({ title, subtitle, media }) {
       return {

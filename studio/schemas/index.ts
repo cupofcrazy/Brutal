@@ -10,6 +10,7 @@ import blockContent from './objects/blockContent'
 import seo from './objects/seo'
 
 import slideshow from './modules/slideshow'
+import image from './objects/image'
 
 export const schemaTypes = [
   home,
@@ -22,4 +23,5 @@ export const schemaTypes = [
   blockContent,
   seo,
   slideshow,
+  image
 ]

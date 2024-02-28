@@ -35,7 +35,7 @@ export default defineType({
     defineField({
       name: 'mainImage',
       title: 'Main image',
-      type: 'image',
+      type: 'a11yImage',
       options: {
         hotspot: true,
       },
@@ -62,7 +62,7 @@ export default defineType({
     select: {
       title: 'title',
       subtitle: 'description',
-      media: 'mainImage',
+      media: 'mainImage.image',
     },
     prepare(selection) {
       const {title, subtitle, media} = selection

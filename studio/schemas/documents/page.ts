@@ -45,7 +45,6 @@ export default defineType({
       media: 'seo.ogImage'
     },
     prepare({ title, subtitle, media }) {
-      console.log(media)
       return {
         title,
         subtitle,

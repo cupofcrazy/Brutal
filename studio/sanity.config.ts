@@ -18,8 +18,8 @@ const { theme } = (await import(
 
 export default defineConfig({
   name: 'default',
-  title: 'Untitled'.toUpperCase(),
-
+  title: 'Frackle',
+  icon: Logo,
   projectId: '1qcsl6ez',
   dataset: 'production',
 
@@ -43,11 +43,6 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
-  },
-  studio: {
-    components: {
-      logo: Logo,
-    },
   },
   theme: theme,
 })
