@@ -1,27 +1,9 @@
 <script setup lang="ts">
-const imageQuery = groq`
-  "image": image.asset->
-`
-const query = groq`
-  *[_type == "post" && slug.current == $slug][0] {
-    author ->,
-    mainImage {
-      ${imageQuery},
-      alt,
-    },
-    "body": body[] {
-      ...,
-      _type == "a11yImage" => {
-        ${imageQuery},
-      }
-    },
-    
-    ...
-  }
-`
+import { postQuery } from '~/lib/sanity/queries';
+
 
 const route = useRoute()
-const { data } = await useAsyncData('post', () => useSanity().fetch<{ post: any }>(query, { slug: route.params.id}))
+const { data } = await useAsyncData('post', () => useSanity().fetch<{ post: any }>(postQuery, { slug: route.params.id}))
 const post = ref<any>(null)
 
 post.value = data.value

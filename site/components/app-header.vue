@@ -46,8 +46,8 @@ const isDevelopment = import.meta.env.MODE === 'development'
   left: 0;
   width: 100%;
   z-index: 9999;
-  background-color: #ffffffac;
-  backdrop-filter: blur(32px) saturate(500%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  // backdrop-filter: blur(32px) saturate(500%);
 }
 
 .nav {

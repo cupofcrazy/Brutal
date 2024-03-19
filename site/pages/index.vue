@@ -1,32 +1,16 @@
 <script setup lang="ts">
-
-
+import { postsQuery } from '~/lib/sanity/queries'
 useHead({
   title: 'UNTITLED | Index',
 })
-
-const imageQuery = groq`
-  "image": image.asset->
-`
 
 type Post = {
   title: string
   mainImage: string,
   body: any
 }
-const query = groq`
-  *[_type == "post"] {
-    title,
-    // "mainImage": mainImage.image.asset->,
-    mainImage {
-      ${imageQuery},
-      alt,
-    },
-    description,
-    "slug": slug.current,
-  }
-`
-const { data } = await useAsyncData('posts', () => useSanity().fetch<{ posts: Post[] }>(query))
+
+const { data } = await useAsyncData('posts', () => useSanity().fetch<{ posts: Post[] }>(postsQuery))
 const posts = ref<any>(null)
 // @ts-ignore
 posts.value = data.value
